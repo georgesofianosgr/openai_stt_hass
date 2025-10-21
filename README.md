@@ -5,12 +5,11 @@
 This custom component integrates [OpenAI Speech-to-Text](https://platform.openai.com/docs/guides/speech-to-text), also known as Whisper, into Home Assistant via the OpenAI API for use in the Assist pipeline.
 
 ## Features
-
-✨ **Full UI Configuration** - No YAML needed! Configure everything through Home Assistant's UI
-🎯 **Multiple Entities** - Create multiple STT instances with different settings
-🌍 **Multi-language Support** - 57 languages (65+ regional variants) with proper BCP 47 language codes
-⚡ **Realtime API Support** - Use OpenAI's Realtime API for faster transcription
-🔧 **Advanced Options** - Configure model, temperature, prompts, and noise reduction
+- ✨ **Full UI Configuration** - No YAML needed! Configure everything through Home Assistant's UI
+- 🎯 **Multiple Entities** - Create multiple STT instances with different settings
+- 🌍 **Multi-language Support** - 57 languages (65+ regional variants) with proper BCP 47 language codes
+- ⚡ **Realtime API Support** - Use OpenAI's Realtime API for faster transcription
+- 🔧 **Advanced Options** - Configure model, temperature, prompts, and noise reduction
 
 ## Installation
 
