@@ -71,6 +71,7 @@ class OpenAISTTConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             api_key = user_input[CONF_API_KEY]
             api_url = user_input.get(CONF_API_URL, DEFAULT_API_URL)
+            name = user_input.get("name", "OpenAI STT")
 
             # Validate the API key
             result = await validate_api_key(self.hass, api_key, api_url)
@@ -78,22 +79,19 @@ class OpenAISTTConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             if "error" in result:
                 errors["base"] = result["error"]
             else:
-                # Create a unique ID based on the API URL to prevent duplicates
-                await self.async_set_unique_id(api_url)
-                self._abort_if_unique_id_configured()
-
+                # Allow multiple instances - no unique_id check
                 return self.async_create_entry(
-                    title=result["title"],
+                    title=name,
                     data={
                         CONF_API_KEY: api_key,
                         CONF_API_URL: api_url,
                     },
                     options={
-                        CONF_MODEL: user_input.get(CONF_MODEL, DEFAULT_MODEL),
-                        CONF_PROMPT: user_input.get(CONF_PROMPT, DEFAULT_PROMPT),
-                        CONF_TEMPERATURE: user_input.get(CONF_TEMPERATURE, DEFAULT_TEMPERATURE),
-                        CONF_REALTIME: user_input.get(CONF_REALTIME, DEFAULT_REALTIME),
-                        CONF_NOISE_REDUCTION: user_input.get(CONF_NOISE_REDUCTION, DEFAULT_NOISE_REDUCTION),
+                        CONF_MODEL: DEFAULT_MODEL,
+                        CONF_PROMPT: DEFAULT_PROMPT,
+                        CONF_TEMPERATURE: DEFAULT_TEMPERATURE,
+                        CONF_REALTIME: DEFAULT_REALTIME,
+                        CONF_NOISE_REDUCTION: DEFAULT_NOISE_REDUCTION,
                     },
                 )
 
@@ -101,15 +99,7 @@ class OpenAISTTConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             {
                 vol.Required(CONF_API_KEY): str,
                 vol.Optional(CONF_API_URL, default=DEFAULT_API_URL): str,
-                vol.Optional(CONF_MODEL, default=DEFAULT_MODEL): vol.In(MODELS),
-                vol.Optional(CONF_PROMPT, default=DEFAULT_PROMPT): str,
-                vol.Optional(CONF_TEMPERATURE, default=DEFAULT_TEMPERATURE): vol.All(
-                    vol.Coerce(int), vol.Range(min=0, max=1)
-                ),
-                vol.Optional(CONF_REALTIME, default=DEFAULT_REALTIME): bool,
-                vol.Optional(CONF_NOISE_REDUCTION, default=DEFAULT_NOISE_REDUCTION): vol.In(
-                    NOISE_REDUCTION_OPTIONS
-                ),
+                vol.Optional("name", default="OpenAI STT"): str,
             }
         )
 

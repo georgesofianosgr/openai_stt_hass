@@ -3,24 +3,16 @@
     "step": {
       "user": {
         "title": "OpenAI STT Setup",
-        "description": "Configure your OpenAI Speech-to-Text integration",
+        "description": "Enter your OpenAI API key to get started. You can configure advanced options later.",
         "data": {
           "api_key": "API Key",
-          "api_url": "API URL",
-          "model": "Model",
-          "prompt": "Prompt (optional)",
-          "temperature": "Temperature",
-          "realtime": "Enable Realtime API (beta)",
-          "noise_reduction": "Noise Reduction"
+          "api_url": "API URL (Advanced)",
+          "name": "Name"
         },
         "data_description": {
-          "api_key": "Your OpenAI API key",
-          "api_url": "OpenAI API endpoint URL",
-          "model": "Transcription model to use",
-          "prompt": "Optional prompt to guide transcription",
-          "temperature": "Model temperature (0-1, affects creativity)",
-          "realtime": "Enable OpenAI Realtime API for streaming transcription",
-          "noise_reduction": "Type of noise reduction to apply"
+          "api_key": "Your OpenAI API key from platform.openai.com",
+          "api_url": "Custom API endpoint (leave default unless using a compatible API)",
+          "name": "A friendly name for this STT instance (e.g., 'Fast STT', 'Accurate STT')"
         }
       }
     },

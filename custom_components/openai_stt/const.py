@@ -25,8 +25,15 @@ MODELS = [
     "whisper-1",
 ]
 
-# Noise reduction options
-NOISE_REDUCTION_OPTIONS = {
+# Noise reduction options (for vol.In validation)
+NOISE_REDUCTION_OPTIONS = [
+    None,
+    "near_field",
+    "far_field",
+]
+
+# Noise reduction display names (for UI selectors)
+NOISE_REDUCTION_LABELS = {
     None: "None",
     "near_field": "Near Field",
     "far_field": "Far Field",

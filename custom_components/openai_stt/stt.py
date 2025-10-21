@@ -16,7 +16,9 @@ from homeassistant.components.stt import (
     Provider,
     SpeechMetadata,
     SpeechResult,
+    SpeechToTextEntity,
 )
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_API_KEY
 from homeassistant.core import HomeAssistant
@@ -155,8 +157,10 @@ async def async_get_engine(
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, config_entry: ConfigEntry
-) -> OpenAISTTProvider:
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
     """Set up OpenAI STT from a config entry."""
     config_data = hass.data[DOMAIN][config_entry.entry_id]
 
@@ -168,9 +172,17 @@ async def async_setup_entry(
     realtime = config_data.get(CONF_REALTIME, DEFAULT_REALTIME)
     noise_reduction = config_data.get(CONF_NOISE_REDUCTION, DEFAULT_NOISE_REDUCTION)
 
-    return OpenAISTTProvider(
-        hass, api_key, api_url, model, prompt, temperature, realtime, noise_reduction
+    entity = OpenAISTTEntity(
+        config_entry,
+        api_key,
+        api_url,
+        model,
+        prompt,
+        temperature,
+        realtime,
+        noise_reduction,
     )
+    async_add_entities([entity])
 
 
 class OpenAISTTProvider(Provider):
@@ -261,3 +273,94 @@ class OpenAISTTProvider(Provider):
             "Processing audio stream with %s", self._client.__class__.__name__
         )
         return await self._client.async_process_audio_stream(metadata, stream)
+
+
+class OpenAISTTEntity(SpeechToTextEntity):
+    """OpenAI STT Entity for config entry support."""
+
+    def __init__(
+        self,
+        config_entry: ConfigEntry,
+        api_key: str,
+        api_url: str,
+        model: str,
+        prompt: str,
+        temperature: int,
+        realtime: bool,
+        noise_reduction: str,
+    ) -> None:
+        """Initialize OpenAI STT entity."""
+        self._config_entry = config_entry
+        self._api_key = api_key
+        self._api_url = api_url
+        self._model = model
+        self._prompt = prompt
+        self._temperature = temperature
+        self._realtime = realtime
+        self._noise_reduction = noise_reduction
+        # Use the config entry title as the entity name
+        self._attr_name = config_entry.title
+        self._attr_unique_id = config_entry.entry_id
+
+    @property
+    def supported_languages(self) -> list[str]:
+        """Return a list of supported languages."""
+        return SUPPORTED_LANGUAGES
+
+    @property
+    def supported_formats(self) -> list[AudioFormats]:
+        """Return a list of supported formats."""
+        return [AudioFormats.WAV, AudioFormats.OGG]
+
+    @property
+    def supported_codecs(self) -> list[AudioCodecs]:
+        """Return a list of supported codecs."""
+        return [AudioCodecs.PCM, AudioCodecs.OPUS]
+
+    @property
+    def supported_bit_rates(self) -> list[AudioBitRates]:
+        """Return a list of supported bitrates."""
+        return [AudioBitRates.BITRATE_16]
+
+    @property
+    def supported_sample_rates(self) -> list[AudioSampleRates]:
+        """Return a list of supported samplerates."""
+        return [AudioSampleRates.SAMPLERATE_16000]
+
+    @property
+    def supported_channels(self) -> list[AudioChannels]:
+        """Return a list of supported channels."""
+        return [AudioChannels.CHANNEL_MONO]
+
+    def _create_client(self):
+        """Create and return the appropriate client based on configuration."""
+        if self._realtime:
+            # Use WebSocket client for OpenAI Realtime API
+            return OpenAIWebSocketClient(
+                async_get_clientsession(self.hass),
+                self._api_key,
+                self._api_url,
+                self._model,
+                self._prompt,
+                self._noise_reduction,
+            )
+
+        # Use HTTP client for OpenAI Transcription API
+        return OpenAIHTTPClient(
+            async_get_clientsession(self.hass),
+            self._api_key,
+            self._api_url,
+            self._model,
+            self._prompt,
+            self._temperature,
+        )
+
+    async def async_process_audio_stream(
+        self, metadata: SpeechMetadata, stream: AsyncIterable[bytes]
+    ) -> SpeechResult:
+        """Process audio stream using the configured method (HTTP or WebSocket)."""
+        client = self._create_client()
+        _LOGGER.debug(
+            "Processing audio stream with %s", client.__class__.__name__
+        )
+        return await client.async_process_audio_stream(metadata, stream)
