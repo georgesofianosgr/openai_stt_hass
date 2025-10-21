@@ -140,7 +140,16 @@ class OpenAISTTOptionsFlow(config_entries.OptionsFlow):
                 vol.Optional(
                     CONF_MODEL,
                     default=options.get(CONF_MODEL, DEFAULT_MODEL),
-                ): vol.In(MODELS),
+                ): selector({
+                    "select": {
+                        "options": [
+                            {"label": "GPT-4o Mini Transcribe", "value": "gpt-4o-mini-transcribe"},
+                            {"label": "GPT-4o Transcribe", "value": "gpt-4o-transcribe"},
+                            {"label": "Whisper-1", "value": "whisper-1"},
+                        ],
+                        "mode": "dropdown",
+                    }
+                }),
                 vol.Optional(
                     CONF_PROMPT,
                     default=options.get(CONF_PROMPT, DEFAULT_PROMPT),
