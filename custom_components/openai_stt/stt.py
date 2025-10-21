@@ -17,29 +17,35 @@ from homeassistant.components.stt import (
     SpeechMetadata,
     SpeechResult,
 )
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_API_KEY
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import homeassistant.helpers.config_validation as cv
 
+from .const import (
+    CONF_API_URL,
+    CONF_MODEL,
+    CONF_NOISE_REDUCTION,
+    CONF_PROMPT,
+    CONF_REALTIME,
+    CONF_TEMPERATURE,
+    DEFAULT_API_URL,
+    DEFAULT_MODEL,
+    DEFAULT_NOISE_REDUCTION,
+    DEFAULT_PROMPT,
+    DEFAULT_REALTIME,
+    DEFAULT_TEMPERATURE,
+    DOMAIN,
+)
 from .http_client import OpenAIHTTPClient
 from .websocket_client import OpenAIWebSocketClient
 
 _LOGGER = logging.getLogger(__name__)
 
-CONF_API_KEY = "api_key"
-CONF_API_URL = "api_url"
-CONF_MODEL = "model"
-CONF_PROMPT = "prompt"
+# Legacy YAML support - keep these for backward compatibility
 CONF_TEMP = "temperature"
-CONF_REALTIME = "realtime"
-CONF_NOISE_REDUCTION = "noise_reduction"
-
-DEFAULT_API_URL = "https://api.openai.com/v1"
-DEFAULT_MODEL = "gpt-4o-mini-transcribe"
-DEFAULT_PROMPT = ""
-DEFAULT_TEMP = 0
-DEFAULT_REALTIME = False
-DEFAULT_NOISE_REDUCTION = None
+DEFAULT_TEMP = DEFAULT_TEMPERATURE
 
 SUPPORTED_MODELS = [
     "whisper-1",
@@ -134,7 +140,7 @@ PLATFORM_SCHEMA = cv.PLATFORM_SCHEMA.extend(
 async def async_get_engine(
     hass: HomeAssistant, config: dict, discovery_info: dict | None = None
 ) -> OpenAISTTProvider:
-    """Return the OpenAI STT provider."""
+    """Return the OpenAI STT provider (legacy YAML support)."""
     api_key = config[CONF_API_KEY]
     api_url = config.get(CONF_API_URL, DEFAULT_API_URL)
     model = config.get(CONF_MODEL, DEFAULT_MODEL)
@@ -142,6 +148,25 @@ async def async_get_engine(
     temperature = config.get(CONF_TEMP, DEFAULT_TEMP)
     realtime = config.get(CONF_REALTIME, DEFAULT_REALTIME)
     noise_reduction = config.get(CONF_NOISE_REDUCTION, DEFAULT_NOISE_REDUCTION)
+
+    return OpenAISTTProvider(
+        hass, api_key, api_url, model, prompt, temperature, realtime, noise_reduction
+    )
+
+
+async def async_setup_entry(
+    hass: HomeAssistant, config_entry: ConfigEntry
+) -> OpenAISTTProvider:
+    """Set up OpenAI STT from a config entry."""
+    config_data = hass.data[DOMAIN][config_entry.entry_id]
+
+    api_key = config_data[CONF_API_KEY]
+    api_url = config_data.get(CONF_API_URL, DEFAULT_API_URL)
+    model = config_data.get(CONF_MODEL, DEFAULT_MODEL)
+    prompt = config_data.get(CONF_PROMPT, DEFAULT_PROMPT)
+    temperature = config_data.get(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
+    realtime = config_data.get(CONF_REALTIME, DEFAULT_REALTIME)
+    noise_reduction = config_data.get(CONF_NOISE_REDUCTION, DEFAULT_NOISE_REDUCTION)
 
     return OpenAISTTProvider(
         hass, api_key, api_url, model, prompt, temperature, realtime, noise_reduction

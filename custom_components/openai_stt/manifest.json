@@ -2,8 +2,9 @@
   "domain": "openai_stt",
   "name": "OpenAI Whisper API",
   "codeowners": ["@einToast"],
+  "config_flow": true,
   "documentation": "https://github.com/einToast/openai_stt_ha",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/einToast/openai_stt_ha/issues",
-  "version": "1.2.0"
+  "version": "1.3.0"
 }

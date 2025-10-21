@@ -1,0 +1,58 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "OpenAI STT Setup",
+        "description": "Configure your OpenAI Speech-to-Text integration",
+        "data": {
+          "api_key": "API Key",
+          "api_url": "API URL",
+          "model": "Model",
+          "prompt": "Prompt (optional)",
+          "temperature": "Temperature",
+          "realtime": "Enable Realtime API (beta)",
+          "noise_reduction": "Noise Reduction"
+        },
+        "data_description": {
+          "api_key": "Your OpenAI API key",
+          "api_url": "OpenAI API endpoint URL",
+          "model": "Transcription model to use",
+          "prompt": "Optional prompt to guide transcription",
+          "temperature": "Model temperature (0-1, affects creativity)",
+          "realtime": "Enable OpenAI Realtime API for streaming transcription",
+          "noise_reduction": "Type of noise reduction to apply"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid API key. Please check your API key and try again.",
+      "cannot_connect": "Unable to connect to OpenAI API. Please check your API URL and network connection.",
+      "unknown": "An unexpected error occurred. Please try again."
+    },
+    "abort": {
+      "already_configured": "This OpenAI API endpoint is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "OpenAI STT Options",
+        "description": "Configure OpenAI STT options",
+        "data": {
+          "model": "Model",
+          "prompt": "Prompt (optional)",
+          "temperature": "Temperature",
+          "realtime": "Enable Realtime API (beta)",
+          "noise_reduction": "Noise Reduction"
+        },
+        "data_description": {
+          "model": "Transcription model to use",
+          "prompt": "Optional prompt to guide transcription",
+          "temperature": "Model temperature (0-1, affects creativity)",
+          "realtime": "Enable OpenAI Realtime API for streaming transcription",
+          "noise_reduction": "Type of noise reduction to apply"
+        }
+      }
+    }
+  }
+}
