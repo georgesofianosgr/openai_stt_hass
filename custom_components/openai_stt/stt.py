@@ -170,27 +170,40 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up OpenAI STT from a config entry."""
-    config_data = hass.data[DOMAIN][config_entry.entry_id]
+    try:
+        config_data = hass.data[DOMAIN][config_entry.entry_id]
 
-    api_key = config_data[CONF_API_KEY]
-    api_url = config_data.get(CONF_API_URL, DEFAULT_API_URL)
-    model = config_data.get(CONF_MODEL, DEFAULT_MODEL)
-    prompt = config_data.get(CONF_PROMPT, DEFAULT_PROMPT)
-    temperature = config_data.get(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
-    realtime = config_data.get(CONF_REALTIME, DEFAULT_REALTIME)
-    noise_reduction = config_data.get(CONF_NOISE_REDUCTION, DEFAULT_NOISE_REDUCTION)
+        api_key = config_data[CONF_API_KEY]
+        api_url = config_data.get(CONF_API_URL, DEFAULT_API_URL)
+        model = config_data.get(CONF_MODEL, DEFAULT_MODEL)
+        prompt = config_data.get(CONF_PROMPT, DEFAULT_PROMPT)
+        temperature = config_data.get(CONF_TEMPERATURE, DEFAULT_TEMPERATURE)
+        realtime = config_data.get(CONF_REALTIME, DEFAULT_REALTIME)
+        noise_reduction = config_data.get(CONF_NOISE_REDUCTION, DEFAULT_NOISE_REDUCTION)
 
-    entity = OpenAISTTEntity(
-        config_entry,
-        api_key,
-        api_url,
-        model,
-        prompt,
-        temperature,
-        realtime,
-        noise_reduction,
-    )
-    async_add_entities([entity])
+        _LOGGER.debug(
+            "Setting up OpenAI STT entity with: model=%s, api_url=%s, realtime=%s, temperature=%s",
+            model,
+            api_url,
+            realtime,
+            temperature,
+        )
+
+        entity = OpenAISTTEntity(
+            config_entry,
+            api_key,
+            api_url,
+            model,
+            prompt,
+            temperature,
+            realtime,
+            noise_reduction,
+        )
+        async_add_entities([entity])
+        _LOGGER.info("OpenAI STT entity setup completed successfully")
+    except Exception as err:
+        _LOGGER.exception("Failed to set up OpenAI STT entity: %s", err)
+        raise
 
 
 class OpenAISTTProvider(Provider):
