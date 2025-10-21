@@ -153,7 +153,12 @@ class OpenAISTTOptionsFlow(config_entries.OptionsFlow):
                 vol.Optional(
                     CONF_PROMPT,
                     default=options.get(CONF_PROMPT, DEFAULT_PROMPT),
-                ): str,
+                ): selector({
+                    "text": {
+                        "multiline": True,
+                        "type": "text",
+                    }
+                }),
                 vol.Optional(
                     CONF_TEMPERATURE,
                     default=options.get(CONF_TEMPERATURE, DEFAULT_TEMPERATURE),
