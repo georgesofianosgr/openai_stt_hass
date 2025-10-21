@@ -15,6 +15,17 @@ from homeassistant.components.stt import SpeechMetadata, SpeechResult, SpeechRes
 _LOGGER = logging.getLogger(__name__)
 
 
+def _convert_language_code(language: str) -> str:
+    """Convert BCP 47 language code to ISO 639-1 code for OpenAI API.
+
+    Home Assistant uses BCP 47 (e.g., 'en-US'), but OpenAI expects ISO 639-1 (e.g., 'en').
+    Special handling for Chinese: zh-CN -> zh, zh-TW -> zh
+    """
+    if "-" in language:
+        return language.split("-")[0]
+    return language
+
+
 class OpenAIHTTPClient:
     """HTTP client for OpenAI STT API."""
 
@@ -61,12 +72,15 @@ class OpenAIHTTPClient:
             "Authorization": f"Bearer {self.api_key}",
         }
 
+        # Convert BCP 47 language code to ISO 639-1 for OpenAI API
+        openai_language = _convert_language_code(language)
+
         form = FormData()
         form.add_field(
             "file", wav_data, filename="whisper_audio.wav", content_type="audio/wav"
         )
         form.add_field("model", self.model)
-        form.add_field("language", language)
+        form.add_field("language", openai_language)
         form.add_field("prompt", self.prompt)
         form.add_field("temperature", str(self.temperature))
         form.add_field("response_format", "json")

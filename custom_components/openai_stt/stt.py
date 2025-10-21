@@ -62,63 +62,71 @@ SUPPORTED_NOISE_REDUCTION = [
 ]
 
 SUPPORTED_LANGUAGES = [
-    "af",
-    "ar",
-    "hy",
-    "az",
-    "be",
-    "bs",
-    "bg",
-    "ca",
-    "zh",
-    "hr",
-    "cs",
-    "da",
-    "nl",
-    "en",
-    "et",
-    "fi",
-    "fr",
-    "gl",
-    "de",
-    "el",
-    "he",
-    "hi",
-    "hu",
-    "is",
-    "id",
-    "it",
-    "ja",
-    "kn",
-    "kk",
-    "ko",
-    "lv",
-    "lt",
-    "mk",
-    "ms",
-    "mr",
-    "mi",
-    "ne",
-    "no",
-    "fa",
-    "pl",
-    "pt",
-    "ro",
-    "ru",
-    "sr",
-    "sk",
-    "sl",
-    "es",
-    "sw",
-    "sv",
-    "tl",
-    "ta",
-    "th",
-    "tr",
-    "uk",
-    "ur",
-    "vi",
-    "cy",
+    "af-ZA",  # Afrikaans
+    "ar-SA",  # Arabic
+    "hy-AM",  # Armenian
+    "az-AZ",  # Azerbaijani
+    "be-BY",  # Belarusian
+    "bs-BA",  # Bosnian
+    "bg-BG",  # Bulgarian
+    "ca-ES",  # Catalan
+    "zh-CN",  # Chinese (Simplified)
+    "zh-TW",  # Chinese (Traditional)
+    "hr-HR",  # Croatian
+    "cs-CZ",  # Czech
+    "da-DK",  # Danish
+    "nl-NL",  # Dutch
+    "en-US",  # English (US)
+    "en-GB",  # English (UK)
+    "en-AU",  # English (Australia)
+    "en-CA",  # English (Canada)
+    "en-IN",  # English (India)
+    "et-EE",  # Estonian
+    "fi-FI",  # Finnish
+    "fr-FR",  # French
+    "fr-CA",  # French (Canada)
+    "gl-ES",  # Galician
+    "de-DE",  # German
+    "el-GR",  # Greek
+    "he-IL",  # Hebrew
+    "hi-IN",  # Hindi
+    "hu-HU",  # Hungarian
+    "is-IS",  # Icelandic
+    "id-ID",  # Indonesian
+    "it-IT",  # Italian
+    "ja-JP",  # Japanese
+    "kn-IN",  # Kannada
+    "kk-KZ",  # Kazakh
+    "ko-KR",  # Korean
+    "lv-LV",  # Latvian
+    "lt-LT",  # Lithuanian
+    "mk-MK",  # Macedonian
+    "ms-MY",  # Malay
+    "mr-IN",  # Marathi
+    "mi-NZ",  # Maori
+    "ne-NP",  # Nepali
+    "nb-NO",  # Norwegian Bokmål
+    "fa-IR",  # Persian
+    "pl-PL",  # Polish
+    "pt-PT",  # Portuguese (Portugal)
+    "pt-BR",  # Portuguese (Brazil)
+    "ro-RO",  # Romanian
+    "ru-RU",  # Russian
+    "sr-RS",  # Serbian
+    "sk-SK",  # Slovak
+    "sl-SI",  # Slovenian
+    "es-ES",  # Spanish (Spain)
+    "es-MX",  # Spanish (Mexico)
+    "sw-KE",  # Swahili
+    "sv-SE",  # Swedish
+    "tl-PH",  # Tagalog
+    "ta-IN",  # Tamil
+    "th-TH",  # Thai
+    "tr-TR",  # Turkish
+    "uk-UA",  # Ukrainian
+    "ur-PK",  # Urdu
+    "vi-VN",  # Vietnamese
+    "cy-GB",  # Welsh
 ]
 
 MODEL_SCHEMA = vol.In(SUPPORTED_MODELS)

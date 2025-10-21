@@ -20,6 +20,17 @@ _LOGGER = logging.getLogger(__name__)
 WEBSOCKET_TIMEOUT: Final = 30
 
 
+def _convert_language_code(language: str) -> str:
+    """Convert BCP 47 language code to ISO 639-1 code for OpenAI API.
+
+    Home Assistant uses BCP 47 (e.g., 'en-US'), but OpenAI expects ISO 639-1 (e.g., 'en').
+    Special handling for Chinese: zh-CN -> zh, zh-TW -> zh
+    """
+    if "-" in language:
+        return language.split("-")[0]
+    return language
+
+
 class OpenAIWebSocketClient:
     """WebSocket client for OpenAI STT API."""
 
@@ -132,6 +143,9 @@ class OpenAIWebSocketClient:
 
     def _create_session_config(self, language: str) -> dict:
         """Create configuration for the transcription session."""
+        # Convert BCP 47 language code to ISO 639-1 for OpenAI API
+        openai_language = _convert_language_code(language)
+
         config = {
             "type": "transcription_session.update",
             "session": {
@@ -139,7 +153,7 @@ class OpenAIWebSocketClient:
                 "input_audio_transcription": {
                     "model": self.model,
                     "prompt": self.prompt,
-                    "language": language,
+                    "language": openai_language,
                 },
                 "turn_detection": {
                     "type": "server_vad",
