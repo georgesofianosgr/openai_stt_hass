@@ -24,9 +24,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
         await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
-        # Register update listener for options changes
-        entry.async_on_unload(entry.add_update_listener(async_reload_entry))
-
         _LOGGER.info("OpenAI STT integration setup completed for entry: %s", entry.entry_id)
         return True
     except Exception as err:
@@ -40,15 +37,3 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data[DOMAIN].pop(entry.entry_id)
 
     return unload_ok
-
-
-async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
-    """Reload config entry when options change."""
-    _LOGGER.debug("Reloading OpenAI STT integration for entry: %s", entry.entry_id)
-    try:
-        await async_unload_entry(hass, entry)
-        await async_setup_entry(hass, entry)
-        _LOGGER.info("OpenAI STT integration reloaded successfully for entry: %s", entry.entry_id)
-    except Exception as err:
-        _LOGGER.exception("Failed to reload OpenAI STT integration: %s", err)
-        raise

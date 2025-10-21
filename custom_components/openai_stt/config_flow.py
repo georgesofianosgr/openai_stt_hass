@@ -119,12 +119,8 @@ class OpenAISTTConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return OpenAISTTOptionsFlow(config_entry)
 
 
-class OpenAISTTOptionsFlow(config_entries.OptionsFlow):
+class OpenAISTTOptionsFlow(config_entries.OptionsFlowWithConfigEntry):
     """Handle options flow for OpenAI STT."""
-
-    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
-        """Initialize options flow."""
-        super().__init__()
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
