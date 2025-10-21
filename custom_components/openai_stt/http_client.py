@@ -116,15 +116,10 @@ class OpenAIHTTPClient:
 
         except ClientError as err:
             if isinstance(err, ClientResponseError):
-                try:
-                    error_json = await err.response.json()
-                    _LOGGER.error(
-                        "HTTP error %s: %s",
-                        err.status,
-                        error_json["error"]["message"],
-                    )
-                except Exception:
-                    _LOGGER.exception("Error parsing error response")
+                error_msg = f"HTTP {err.status}"
+                if err.message:
+                    error_msg += f": {err.message}"
+                _LOGGER.error("%s - %s", error_msg, err.request_info.url)
             else:
                 _LOGGER.error("HTTP error: %s", err)
             return SpeechResult("", SpeechResultState.ERROR)
