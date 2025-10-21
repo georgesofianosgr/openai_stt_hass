@@ -127,12 +127,29 @@ class OpenAISTTOptionsFlow(config_entries.OptionsFlowWithConfigEntry):
     ) -> FlowResult:
         """Manage the options."""
         if user_input is not None:
+            # Update the config entry title if friendly name changed
+            if "friendly_name" in user_input:
+                self.hass.config_entries.async_update_entry(
+                    self.config_entry,
+                    title=user_input["friendly_name"]
+                )
+                # Remove friendly_name from options as it's stored in title
+                user_input = {k: v for k, v in user_input.items() if k != "friendly_name"}
+
             return self.async_create_entry(title="", data=user_input)
 
         options = self.config_entry.options
 
         data_schema = vol.Schema(
             {
+                vol.Optional(
+                    "friendly_name",
+                    default=self.config_entry.title,
+                ): selector({
+                    "text": {
+                        "type": "text",
+                    }
+                }),
                 vol.Optional(
                     CONF_MODEL,
                     default=options.get(CONF_MODEL, DEFAULT_MODEL),

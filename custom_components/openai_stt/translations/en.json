@@ -31,6 +31,7 @@
         "title": "OpenAI STT Options",
         "description": "Configure OpenAI STT options",
         "data": {
+          "friendly_name": "Friendly Name",
           "model": "Model",
           "prompt": "Prompt (optional)",
           "temperature": "Temperature",
@@ -38,6 +39,7 @@
           "noise_reduction": "Noise Reduction"
         },
         "data_description": {
+          "friendly_name": "A friendly name for this STT entity (e.g., 'Kitchen Voice', 'Bedroom Assistant')",
           "model": "Transcription model to use",
           "prompt": "Optional prompt to guide transcription",
           "temperature": "Model temperature (0-1, affects creativity)",
