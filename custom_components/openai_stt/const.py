@@ -16,7 +16,7 @@ DEFAULT_MODEL = "gpt-4o-mini-transcribe"
 DEFAULT_PROMPT = ""
 DEFAULT_TEMPERATURE = 0.0
 DEFAULT_REALTIME = False
-DEFAULT_NOISE_REDUCTION = None
+DEFAULT_NOISE_REDUCTION = "none"
 
 # Available models
 MODELS = [
@@ -25,16 +25,9 @@ MODELS = [
     "whisper-1",
 ]
 
-# Noise reduction options (for vol.In validation)
+# Noise reduction options
 NOISE_REDUCTION_OPTIONS = [
-    None,
+    "none",
     "near_field",
     "far_field",
 ]
-
-# Noise reduction display names (for UI selectors)
-NOISE_REDUCTION_LABELS = {
-    None: "None",
-    "near_field": "Near Field",
-    "far_field": "Far Field",
-}

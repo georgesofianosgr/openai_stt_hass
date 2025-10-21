@@ -31,6 +31,16 @@ def _convert_language_code(language: str) -> str:
     return language
 
 
+def _convert_noise_reduction(noise_reduction: str) -> str | None:
+    """Convert noise reduction value from config to API format.
+
+    Config uses "none" string, but API expects None or a valid type string.
+    """
+    if noise_reduction == "none":
+        return None
+    return noise_reduction
+
+
 class OpenAIWebSocketClient:
     """WebSocket client for OpenAI STT API."""
 
@@ -164,9 +174,11 @@ class OpenAIWebSocketClient:
             },
         }
 
-        if self.noise_reduction:
+        # Convert and apply noise reduction if not "none"
+        noise_reduction_value = _convert_noise_reduction(self.noise_reduction)
+        if noise_reduction_value:
             config["session"]["input_audio_noise_reduction"] = {
-                "type": self.noise_reduction
+                "type": noise_reduction_value
             }
         else:
             config["session"]["input_audio_noise_reduction"] = None

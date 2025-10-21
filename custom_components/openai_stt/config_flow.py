@@ -10,6 +10,7 @@ from homeassistant.const import CONF_API_KEY
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.selector import selector
 import aiohttp
 
 from .const import (
@@ -155,7 +156,16 @@ class OpenAISTTOptionsFlow(config_entries.OptionsFlow):
                 vol.Optional(
                     CONF_NOISE_REDUCTION,
                     default=options.get(CONF_NOISE_REDUCTION, DEFAULT_NOISE_REDUCTION),
-                ): vol.In(NOISE_REDUCTION_OPTIONS),
+                ): selector({
+                    "select": {
+                        "options": [
+                            {"label": "None", "value": "none"},
+                            {"label": "Near Field", "value": "near_field"},
+                            {"label": "Far Field", "value": "far_field"},
+                        ],
+                        "mode": "dropdown",
+                    }
+                }),
             }
         )
 
