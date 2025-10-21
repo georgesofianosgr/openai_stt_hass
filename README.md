@@ -1,16 +1,32 @@
 # OpenAI Speech-To-Text for Home Assistant
 
+> **Note:** This is a fork of the [original repository](https://github.com/einToast/openai_stt_ha) with enhanced UI configuration and additional features.
+
 This custom component integrates [OpenAI Speech-to-Text](https://platform.openai.com/docs/guides/speech-to-text), also known as Whisper, into Home Assistant via the OpenAI API for use in the Assist pipeline.
+
+## Features
+
+✨ **Full UI Configuration** - No YAML needed! Configure everything through Home Assistant's UI
+🎯 **Multiple Entities** - Create multiple STT instances with different settings
+🌍 **Multi-language Support** - 57 languages (65+ regional variants) with proper BCP 47 language codes
+⚡ **Realtime API Support** - Use OpenAI's Realtime API for faster transcription
+🔧 **Advanced Options** - Configure model, temperature, prompts, and noise reduction
 
 ## Installation
 
-### HACS (Recommended)
+### HACS (Custom Repository)
 
+Since this is a fork, it's not available in the default HACS store. You need to add it as a custom repository:
 
-This integration is part of the standard HACS repository. Just search for "OpenAI Whisper API" to install it, or use this link to go directly there:
-
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=einToast&repository=openai_stt_ha&category=integration)
-
+1. Open HACS in Home Assistant
+2. Click the **three dots** (⋮) in the upper right corner
+3. Select **Custom repositories**
+4. Add this repository URL: `https://github.com/georgesofianosgr/openai_stt_hass`
+   - Replace with your actual GitHub username and repository name
+5. Select **Integration** as the category
+6. Click **Add**
+7. Click **Download** on the repository card
+8. Restart Home Assistant
 
 ### Manual
 
@@ -25,7 +41,7 @@ You need to create an account on the [OpenAI website](https://platform.openai.co
 
 ### UI Configuration (Recommended)
 
-Starting with version 1.3.0, this integration supports full UI-based configuration through Home Assistant's integrations page.
+This fork has **full UI-based configuration** through Home Assistant's integrations page:
 
 1. Go to **Settings** > **Devices & Services**
 2. Click on **+ Add Integration**
@@ -33,7 +49,14 @@ Starting with version 1.3.0, this integration supports full UI-based configurati
 4. Enter your OpenAI API key and configure the optional settings
 5. Click **Submit** to complete the setup
 
-You can modify settings later by clicking **Configure** on the integration card.
+You can modify all settings later by clicking **Configure** on the integration card, including:
+
+- Friendly name
+- Model selection
+- Transcription prompt
+- Temperature
+- Realtime API mode
+- Noise reduction
 
 ### YAML Configuration (Legacy)
 
@@ -65,22 +88,12 @@ stt:
 - `noise_reduction` (Optional): The noise reduction to use. The available options are `null`, `near_field` and `far_field`. `near_field` is for close-range audio, `far_field` is for distant audio, `null` turns off noise reduction. The default is `null`. Only applicable when `realtime: true`
 
 ## Supported Models
+
 See the accuracy comparison of the models [here](https://openai.com/index/introducing-our-next-generation-audio-models/).
 
 - `gpt-4o-mini-transcribe`: model optimized for speed and cost. Cost: estimated `$0.003` per minute of audio
 - `gpt-4o-transcribe`: model optimized for accuracy. Cost: estimated `$0.006` per minute of audio
 - `whisper-1`: original `whisper-large-v2` model. Superseded by `gpt-4o-mini-transcribe` and `gpt-4o-transcribe`. Cost: `$0.006` per minute of audio
-
-## Migration from YAML to UI Configuration
-
-If you're currently using YAML configuration and want to migrate to the UI:
-
-1. Go to **Settings** > **Devices & Services**
-2. Click on **+ Add Integration**
-3. Search for "OpenAI Whisper API"
-4. Enter your configuration settings in the UI
-5. Once confirmed working, remove the YAML configuration from `configuration.yaml`
-6. Restart Home Assistant
 
 ## Troubleshooting
 
