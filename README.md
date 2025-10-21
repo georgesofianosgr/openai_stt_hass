@@ -21,7 +21,6 @@ Since this is a fork, it's not available in the default HACS store. You need to 
 2. Click the **three dots** (⋮) in the upper right corner
 3. Select **Custom repositories**
 4. Add this repository URL: `https://github.com/georgesofianosgr/openai_stt_hass`
-   - Replace with your actual GitHub username and repository name
 5. Select **Integration** as the category
 6. Click **Add**
 7. Click **Download** on the repository card
