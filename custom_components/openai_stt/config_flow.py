@@ -147,7 +147,7 @@ class OpenAISTTOptionsFlow(config_entries.OptionsFlow):
                 vol.Optional(
                     CONF_TEMPERATURE,
                     default=options.get(CONF_TEMPERATURE, DEFAULT_TEMPERATURE),
-                ): vol.All(vol.Coerce(int), vol.Range(min=0, max=1)),
+                ): vol.All(vol.Coerce(float), vol.Range(min=0.0, max=1.0)),
                 vol.Optional(
                     CONF_REALTIME,
                     default=options.get(CONF_REALTIME, DEFAULT_REALTIME),

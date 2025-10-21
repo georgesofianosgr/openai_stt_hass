@@ -138,7 +138,7 @@ PLATFORM_SCHEMA = cv.PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_API_URL, default=DEFAULT_API_URL): cv.string,
         vol.Optional(CONF_MODEL, default=DEFAULT_MODEL): MODEL_SCHEMA,
         vol.Optional(CONF_PROMPT, default=DEFAULT_PROMPT): cv.string,
-        vol.Optional(CONF_TEMP, default=DEFAULT_TEMP): cv.positive_int,
+        vol.Optional(CONF_TEMP, default=DEFAULT_TEMP): vol.All(vol.Coerce(float), vol.Range(min=0.0, max=1.0)),
         vol.Optional(CONF_REALTIME, default=DEFAULT_REALTIME): cv.boolean,
         vol.Optional(
             CONF_NOISE_REDUCTION, default=DEFAULT_NOISE_REDUCTION
@@ -203,7 +203,7 @@ class OpenAISTTProvider(Provider):
         api_url: str,
         model: str,
         prompt: str,
-        temperature: int,
+        temperature: float,
         realtime: bool,
         noise_reduction: str,
     ) -> None:
@@ -293,7 +293,7 @@ class OpenAISTTEntity(SpeechToTextEntity):
         api_url: str,
         model: str,
         prompt: str,
-        temperature: int,
+        temperature: float,
         realtime: bool,
         noise_reduction: str,
     ) -> None:

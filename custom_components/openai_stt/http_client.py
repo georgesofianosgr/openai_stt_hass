@@ -36,7 +36,7 @@ class OpenAIHTTPClient:
         api_url: str,
         model: str,
         prompt: str,
-        temperature: int,
+        temperature: float,
     ) -> None:
         """Initialize the HTTP client."""
         self.client = client
@@ -86,9 +86,10 @@ class OpenAIHTTPClient:
         form.add_field("response_format", "json")
 
         _LOGGER.debug(
-            "Preparing request to API with parameters: model=%s, language=%s, prompt=%s, temperature=%s",
+            "Preparing request to API with parameters: model=%s, language=%s (converted to %s), prompt=%s, temperature=%s",
             self.model,
             language,
+            openai_language,
             self.prompt,
             self.temperature,
         )
